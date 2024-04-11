@@ -243,10 +243,22 @@ public class MazeGenerator : MonoBehaviour
             PlaceBallOnRandomNode(nodes);
         }
     }
+
     void PlaceBallOnRandomNode(List<MazeNode> nodes)
     {
-        MazeNode randomNode = nodes[Random.Range(0, nodes.Count)];
-        Vector3 ballPosition = randomNode.transform.position + Vector3.up * 0.5f; // Adjust the Y position as necessary
-        Instantiate(ballPrefab, ballPosition, Quaternion.identity);
+        HashSet<int> usedIndices = new HashSet<int>(); // Track used indices
+        int ballsToPlace = 3;
+        while (ballsToPlace > 0 && usedIndices.Count < nodes.Count)
+        {
+            int randomIndex = Random.Range(0, nodes.Count);
+            if (!usedIndices.Contains(randomIndex))
+            {
+                usedIndices.Add(randomIndex);
+                MazeNode randomNode = nodes[randomIndex];
+                Vector3 ballPosition = randomNode.transform.position + Vector3.up * 0.5f;
+                Instantiate(ballPrefab, ballPosition, Quaternion.identity);
+                ballsToPlace--;
+            }
+        }
     }
 }
