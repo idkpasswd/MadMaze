@@ -7,7 +7,7 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] MazeNode nodePrefab;
     [SerializeField] Vector2Int mazeSize;
     [SerializeField] float nodeSize;
-
+    [SerializeField] GameObject ballPrefab;
     private void Start()
     {
         GenerateMazeInstant(mazeSize);
@@ -124,6 +124,7 @@ public class MazeGenerator : MonoBehaviour
                 currentPath.RemoveAt(currentPath.Count - 1);
             }
         }
+        PlaceBallOnRandomNode(nodes);
     }
 
     IEnumerator GenerateMaze(Vector2Int size)
@@ -239,6 +240,13 @@ public class MazeGenerator : MonoBehaviour
             }
 
             yield return new WaitForSeconds(0.05f);
+            PlaceBallOnRandomNode(nodes);
         }
+    }
+    void PlaceBallOnRandomNode(List<MazeNode> nodes)
+    {
+        MazeNode randomNode = nodes[Random.Range(0, nodes.Count)];
+        Vector3 ballPosition = randomNode.transform.position + Vector3.up * 0.5f; // Adjust the Y position as necessary
+        Instantiate(ballPrefab, ballPosition, Quaternion.identity);
     }
 }
