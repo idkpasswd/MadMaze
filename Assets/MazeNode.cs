@@ -34,4 +34,14 @@ public class MazeNode : MonoBehaviour
                 break;
         }
     }
+
+    public bool IsWallActive(int wallIndex)
+    {
+        if (wallIndex >= 0 && wallIndex < walls.Length)
+        {
+            return walls[wallIndex].activeSelf;
+        }
+        return false;
+    }
+
 }

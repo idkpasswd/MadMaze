@@ -8,6 +8,7 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] Vector2Int mazeSize;
     [SerializeField] float nodeSize;
     [SerializeField] GameObject ballPrefab;
+    [SerializeField] GameObject doorPrefab;
     private void Start()
     {
         GenerateMazeInstant(mazeSize);
@@ -125,6 +126,7 @@ public class MazeGenerator : MonoBehaviour
             }
         }
         PlaceBallOnRandomNode(nodes);
+        PlaceDoorOnRandomNode(nodes, size);
     }
 
     IEnumerator GenerateMaze(Vector2Int size)
@@ -241,6 +243,7 @@ public class MazeGenerator : MonoBehaviour
 
             yield return new WaitForSeconds(0.05f);
             PlaceBallOnRandomNode(nodes);
+            PlaceDoorOnRandomNode(nodes, size);
         }
     }
 
@@ -261,4 +264,42 @@ public class MazeGenerator : MonoBehaviour
             }
         }
     }
+
+    void PlaceDoorOnRandomNode(List<MazeNode> nodes, Vector2Int size)
+    {
+        List<MazeNode> potentialDoorNodes = new List<MazeNode>();
+
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            int index = i;
+            int x = index % size.x;
+            int y = index / size.x;
+
+            int wallCount = 0;
+            if (x > 0 && nodes[index - 1].IsWallActive(1)) wallCount++;
+            if (x < size.x - 1 && nodes[index + 1].IsWallActive(3)) wallCount++;
+            if (y > 0 && nodes[index - size.x].IsWallActive(2)) wallCount++;
+            if (y < size.y - 1 && nodes[index + size.x].IsWallActive(0)) wallCount++;
+
+            if (wallCount > 0)
+            {
+                potentialDoorNodes.Add(nodes[index]);
+            }
+        }
+
+        if (potentialDoorNodes.Count > 0)
+        {
+            int randomIndex = Random.Range(0, potentialDoorNodes.Count);
+            MazeNode doorNode = potentialDoorNodes[randomIndex];
+            Vector3 doorPosition = doorNode.transform.position;
+            doorPosition.y = -0.445f;
+            Quaternion doorRotation = Quaternion.Euler(-90, 0, 0);
+
+            GameObject doorInstance = Instantiate(doorPrefab, doorPosition, doorRotation);
+            doorInstance.transform.localScale = new Vector3(0.06f, 0.06f, 0.06f);
+        }
+    }
+
+
+
 }
