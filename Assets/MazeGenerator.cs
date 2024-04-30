@@ -5,6 +5,8 @@ using UnityEngine;
 public class MazeGenerator : MonoBehaviour
 {
     [SerializeField] MazeNode nodePrefab;
+    [SerializeField] eMazeNode endNode;
+
     [SerializeField] Vector2Int mazeSize;
     [SerializeField] float nodeSize;
     [SerializeField] GameObject ballPrefab;
@@ -247,17 +249,25 @@ public class MazeGenerator : MonoBehaviour
     void PlaceBallOnRandomNode(List<MazeNode> nodes)
     {
         HashSet<int> usedIndices = new HashSet<int>(); // Track used indices
-        int ballsToPlace = 3;
+        int ballsToPlace = 4;
         while (ballsToPlace > 0 && usedIndices.Count < nodes.Count)
         {
             int randomIndex = Random.Range(0, nodes.Count);
             if (!usedIndices.Contains(randomIndex))
             {
                 usedIndices.Add(randomIndex);
-                MazeNode randomNode = nodes[randomIndex];
-                Vector3 ballPosition = randomNode.transform.position + Vector3.up * 0.5f;
-                Instantiate(ballPrefab, ballPosition, Quaternion.identity);
-                ballsToPlace--;
+                if(ballsToPlace != 1){
+                    MazeNode randomNode = nodes[randomIndex];
+                    Vector3 ballPosition = randomNode.transform.position + Vector3.up * 0.5f;
+                    Instantiate(ballPrefab, ballPosition, Quaternion.identity);
+                    ballsToPlace--;
+                }
+                else{
+                    MazeNode randomNode = nodes[randomIndex];
+                    Vector3 ballPosition = randomNode.transform.position + Vector3.up * 0.1f;
+                    Instantiate(endNode, ballPosition, Quaternion.identity);
+                    ballsToPlace--;
+                }
             }
         }
     }
