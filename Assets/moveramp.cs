@@ -12,7 +12,7 @@ public class moveramp : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // 检查发生碰撞的对象是否是球
-        if (collision.gameObject.name == "Cube1")
+        if (collision.gameObject.name == "mesh0")
         {
             offset = Ramp.transform.position - new Vector3(headController.transform.position.x, Ramp.transform.position.y, headController.transform.position.z);
             StartCoroutine(MoveRampUpDown()); // 开始协程来移动Ramp

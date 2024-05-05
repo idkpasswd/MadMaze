@@ -16,6 +16,6 @@ public class arrowLookAt : MonoBehaviour
         //transform.position = new Vector3(player.position.x, transform.position.y, player.position.z);
         transform.position = headController.transform.position + offset;
         transform.LookAt(new Vector3(destination.position.x, transform.position.y, destination.position.z));
-        transform.Rotate(90, 0, 0);
+        transform.Rotate(180, 0, 0);
     }
 }
