@@ -34,7 +34,7 @@ public class win : MonoBehaviour
     {
          isActive = true;
         // 下降阶段
-        yield return StartCoroutine(MoveRamp(-5.0f, 2.0f));  // 下降5单位，耗时2秒
+        yield return StartCoroutine(MoveRamp(-5.0f, 0.5f));  // 下降5单位，耗时2秒
 
         // 停留阶段
         //yield return new WaitForSeconds(5.0f);  // 停留5秒
